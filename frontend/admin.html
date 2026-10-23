@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quản trị | E-Commerce DevOps</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/api.js" defer></script>
+  <script src="/js/admin.js" defer></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <h1>E-Commerce Admin</h1>
+
+        <nav class="main-nav" aria-label="Điều hướng quản trị">
+          <a href="/">Trang bán hàng</a>
+          <a href="#admin-products">Sản phẩm</a>
+          <a href="#admin-orders">Đơn hàng</a>
+        </nav>
+
+        <div id="admin-user-info"></div>
+
+        <button
+          id="admin-logout-btn"
+          type="button"
+          class="btn btn-outline"
+          hidden
+        >
+          Đăng xuất
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <!-- NOTIFICATION -->
+    <div
+      id="admin-notice"
+      class="notification"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
+
+    <!-- ADMIN LOGIN -->
+    <section id="admin-login-section" class="section">
+      <div class="card">
+
+        <h2>Đăng nhập quản trị</h2>
+
+        <p>
+          Vui lòng đăng nhập bằng tài khoản có quyền Admin.
+        </p>
+
+        <form id="admin-login-form">
+
+          <div class="form-group">
+            <label for="admin-email">Email</label>
+
+            <input
+              type="email"
+              id="admin-email"
+              name="email"
+              autocomplete="username"
+              placeholder="admin@example.test"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="admin-password">Mật khẩu</label>
+
+            <input
+              type="password"
+              id="admin-password"
+              name="password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Đăng nhập
+          </button>
+
+        </form>
+
+      </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="admin-dashboard" hidden>
+
+      <!-- PRODUCT MANAGEMENT -->
+      <section id="admin-products" class="section">
+
+        <div class="section-header">
+          <h2>Quản lý sản phẩm</h2>
+
+          <button
+            id="admin-refresh-products"
+            type="button"
+            class="btn btn-outline"
+          >
+            Làm mới
+          </button>
+        </div>
+
+        <!-- CREATE / UPDATE PRODUCT -->
+        <div class="card">
+
+          <h3 id="admin-product-form-title">
+            Thêm sản phẩm
+          </h3>
+
+          <form id="admin-product-form">
+
+            <input
+              type="hidden"
+              id="product-id"
+            >
+
+            <div class="form-group">
+              <label for="product-name">
+                Tên sản phẩm
+              </label>
+
+              <input
+                type="text"
+                id="product-name"
+                maxlength="255"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="product-description">
+                Mô tả
+              </label>
+
+              <textarea
+                id="product-description"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="product-price">
+                Giá bán (VND)
+              </label>
+
+              <input
+                type="number"
+                id="product-price"
+                min="0"
+                step="1"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="product-stock">
+                Số lượng tồn kho
+              </label>
+
+              <input
+                type="number"
+                id="product-stock"
+                min="0"
+                step="1"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="product-image-url">
+                URL hình ảnh
+              </label>
+
+              <input
+                type="url"
+                id="product-image-url"
+                placeholder="https://example.com/image.jpg"
+              >
+            </div>
+
+            <div class="form-actions">
+
+              <button
+                type="submit"
+                id="admin-save-product"
+                class="btn btn-primary"
+              >
+                Lưu sản phẩm
+              </button>
+
+              <button
+                type="button"
+                id="admin-product-reset"
+                class="btn btn-outline"
+              >
+                Hủy chỉnh sửa
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+        <!-- PRODUCT LIST -->
+        <div class="card">
+
+          <h3>Danh sách sản phẩm</h3>
+
+          <div class="table-wrapper">
+
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Giá</th>
+                  <th>Tồn kho</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+
+              <tbody id="admin-products-list">
+                <tr>
+                  <td colspan="5">
+                    Đang tải dữ liệu...
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ORDER MANAGEMENT -->
+      <section id="admin-orders" class="section">
+
+        <div class="section-header">
+
+          <h2>Quản lý đơn hàng</h2>
+
+          <button
+            id="admin-refresh-orders"
+            type="button"
+            class="btn btn-outline"
+          >
+            Làm mới
+          </button>
+
+        </div>
+
+        <div class="card">
+
+          <h3>Danh sách đơn hàng</h3>
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Mã đơn</th>
+                  <th>Khách hàng</th>
+                  <th>Tổng tiền</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày tạo</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+
+              <tbody id="admin-orders-list">
+                <tr>
+                  <td colspan="6">
+                    Đang tải dữ liệu...
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>E-Commerce DevOps | Trang quản trị</p>
+    </div>
+  </footer>
+
+</body>
+</html>

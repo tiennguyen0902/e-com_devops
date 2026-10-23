@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>E-Commerce Store</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/api.js" defer></script>
+  <script src="/js/app.js" defer></script>
+</head>
+
+<body>
+
+  <!-- ===================================== -->
+  <!-- HEADER -->
+  <!-- ===================================== -->
+
+  <header class="site-header">
+
+    <div class="container header-content">
+
+      <a href="/" class="logo">
+        E-Commerce Store
+      </a>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <a href="#products">Sản phẩm</a>
+        <a href="#cart">Giỏ hàng</a>
+        <a href="#orders">Đơn hàng</a>
+      </nav>
+
+      <div class="user-actions">
+
+        <span id="user-info"></span>
+
+        <button
+          id="logout-btn"
+          class="btn btn-outline"
+          type="button"
+          hidden
+        >
+          Đăng xuất
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ===================================== -->
+  <!-- MAIN CONTENT -->
+  <!-- ===================================== -->
+
+  <main class="container">
+
+    <!-- =================================== -->
+    <!-- AUTHENTICATION -->
+    <!-- =================================== -->
+
+    <section id="auth-section" class="section">
+
+      <h1>Chào mừng đến với E-Commerce Store</h1>
+
+      <p class="section-description">
+        Đăng nhập để mua hàng và quản lý đơn hàng.
+      </p>
+
+      <div class="auth-grid">
+
+        <!-- ============================== -->
+        <!-- LOGIN PANEL -->
+        <!-- ============================== -->
+
+        <div
+          id="login-panel"
+          class="card"
+        >
+
+          <h2>Đăng nhập</h2>
+
+          <form id="login-form">
+
+            <label for="login-email">
+              Email
+            </label>
+
+            <input
+              id="login-email"
+              type="email"
+              autocomplete="email"
+              required
+            >
+
+            <label for="login-password">
+              Mật khẩu
+            </label>
+
+            <input
+              id="login-password"
+              type="password"
+              autocomplete="current-password"
+              required
+            >
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Đăng nhập
+            </button>
+
+          </form>
+
+          <!-- SWITCH TO REGISTER -->
+
+          <p class="auth-switch">
+            Chưa có tài khoản?
+          </p>
+
+          <button
+            id="show-register-btn"
+            class="btn btn-outline"
+            type="button"
+          >
+            Đăng ký tài khoản
+          </button>
+
+        </div>
+
+
+        <!-- ============================== -->
+        <!-- REGISTER PANEL -->
+        <!-- ============================== -->
+
+        <div
+          id="register-panel"
+          class="card"
+          hidden
+        >
+
+          <h2>Đăng ký tài khoản</h2>
+
+          <form id="register-form">
+
+            <label for="register-name">
+              Họ và tên
+            </label>
+
+            <input
+              id="register-name"
+              type="text"
+              minlength="2"
+              maxlength="100"
+              autocomplete="name"
+              required
+            >
+
+            <label for="register-email">
+              Email
+            </label>
+
+            <input
+              id="register-email"
+              type="email"
+              autocomplete="email"
+              required
+            >
+
+            <label for="register-password">
+              Mật khẩu
+            </label>
+
+            <input
+              id="register-password"
+              type="password"
+              minlength="10"
+              autocomplete="new-password"
+              required
+            >
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Tạo tài khoản
+            </button>
+
+          </form>
+
+          <!-- SWITCH TO LOGIN -->
+
+          <p class="auth-switch">
+            Đã có tài khoản?
+          </p>
+
+          <button
+            id="show-login-btn"
+            class="btn btn-outline"
+            type="button"
+          >
+            Quay lại đăng nhập
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================== -->
+    <!-- NOTIFICATION -->
+    <!-- =================================== -->
+
+    <div
+      id="notification"
+      class="notification"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
+
+
+    <!-- =================================== -->
+    <!-- PRODUCTS -->
+    <!-- =================================== -->
+
+    <section id="products" class="section">
+
+      <div class="section-heading">
+
+        <div>
+          <h2>Sản phẩm</h2>
+          <p>Danh sách sản phẩm đang bán</p>
+        </div>
+
+        <button
+          id="refresh-products"
+          class="btn btn-outline"
+          type="button"
+        >
+          Tải lại
+        </button>
+
+      </div>
+
+      <div
+        id="products-list"
+        class="product-grid"
+      >
+        <p>Đang tải sản phẩm...</p>
+      </div>
+
+    </section>
+
+
+    <!-- =================================== -->
+    <!-- CART -->
+    <!-- =================================== -->
+
+    <section id="cart" class="section">
+
+      <div class="section-heading">
+
+        <div>
+          <h2>Giỏ hàng</h2>
+          <p>Sản phẩm bạn đã chọn</p>
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div id="cart-items">
+          <p>Vui lòng đăng nhập để xem giỏ hàng.</p>
+        </div>
+
+        <div class="cart-summary">
+
+          <span>Tổng tiền:</span>
+
+          <strong id="cart-total">
+            0 ₫
+          </strong>
+
+        </div>
+
+        <button
+          id="checkout-btn"
+          class="btn btn-primary"
+          type="button"
+          disabled
+        >
+          Đặt hàng
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================== -->
+    <!-- ORDERS -->
+    <!-- =================================== -->
+
+    <section id="orders" class="section">
+
+      <div class="section-heading">
+
+        <div>
+          <h2>Đơn hàng của tôi</h2>
+          <p>Lịch sử các đơn hàng đã đặt</p>
+        </div>
+
+        <button
+          id="refresh-orders"
+          class="btn btn-outline"
+          type="button"
+        >
+          Tải lại
+        </button>
+
+      </div>
+
+      <div
+        id="orders-list"
+        class="orders-list"
+      >
+        <p>Vui lòng đăng nhập để xem đơn hàng.</p>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ===================================== -->
+  <!-- FOOTER -->
+  <!-- ===================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <p>
+        E-Commerce Store – DevOps Project
+      </p>
+
+    </div>
+
+  </footer>
+
+</body>
+</html>

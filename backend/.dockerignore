@@ -1,0 +1,48 @@
+# ==========================================
+# E-COMMERCE BACKEND DOCKERIGNORE
+# ==========================================
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+
+# Version control
+.git/
+.gitignore
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Test and coverage
+coverage/
+.nyc_output/
+test/
+tests/
+__tests__/
+
+# Development tools
+.vscode/
+.idea/
+
+# Documentation
+README.md
+docs/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
