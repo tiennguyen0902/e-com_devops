@@ -1,0 +1,85 @@
+# ==========================================
+# E-COMMERCE DEVOPS - PROMETHEUS
+# ==========================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+  external_labels:
+    project: ecommerce-devops-new
+    environment: development
+
+
+# ==========================================
+# SCRAPE CONFIGURATIONS
+# ==========================================
+
+scrape_configs:
+
+  # ----------------------------------------
+  # PROMETHEUS SELF-MONITORING
+  # ----------------------------------------
+
+  - job_name: prometheus
+
+    metrics_path: /metrics
+
+    static_configs:
+      - targets:
+          - prometheus:9090
+
+        labels:
+          service: prometheus
+          category: monitoring
+
+
+  # ----------------------------------------
+  # CONTAINER MONITORING - CADVISOR
+  # ----------------------------------------
+
+  - job_name: cadvisor
+
+    metrics_path: /metrics
+
+    static_configs:
+      - targets:
+          - cadvisor:8080
+
+        labels:
+          service: cadvisor
+          category: container
+
+
+  # ----------------------------------------
+  # NGINX WEB SERVER MONITORING
+  # ----------------------------------------
+
+  - job_name: nginx
+
+    metrics_path: /metrics
+
+    static_configs:
+      - targets:
+          - nginx-exporter:9113
+
+        labels:
+          service: nginx
+          category: web
+
+
+  # ----------------------------------------
+  # MYSQL DATABASE MONITORING
+  # ----------------------------------------
+
+  - job_name: mysql
+
+    metrics_path: /metrics
+
+    static_configs:
+      - targets:
+          - mysqld-exporter:9104
+
+        labels:
+          service: mysql
+          category: database
