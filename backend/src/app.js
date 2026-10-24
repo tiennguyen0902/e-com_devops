@@ -31,6 +31,7 @@ const { pool } = require("./config/database");
 // ==========================================
 
 const app = express();
+app.set("trust proxy", 1);
 
 // Disable Express identification header
 app.disable("x-powered-by");

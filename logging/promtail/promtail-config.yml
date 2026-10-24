@@ -1,0 +1,58 @@
+# ==========================================
+# E-COMMERCE DEVOPS - PROMTAIL
+# ==========================================
+
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+
+  # ========================================
+  # DOCKER CONTAINER LOGS
+  # ========================================
+
+  - job_name: docker-containers
+
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 10s
+
+    relabel_configs:
+
+      # Only collect logs from this project
+      - source_labels:
+          - __meta_docker_container_label_com_docker_compose_project
+        regex: ecommerce-devops-new
+        action: keep
+
+      # Container name
+      - source_labels:
+          - __meta_docker_container_name
+        regex: /(.+)
+        target_label: container
+
+      # Docker Compose service
+      - source_labels:
+          - __meta_docker_container_label_com_docker_compose_service
+        target_label: service
+
+      # Docker Compose project
+      - source_labels:
+          - __meta_docker_container_label_com_docker_compose_project
+        target_label: project
+
+      # Docker log stream
+      - source_labels:
+          - __meta_docker_container_log_stream
+        target_label: stream
+
+      # Static job label
+      - target_label: job
+        replacement: docker
